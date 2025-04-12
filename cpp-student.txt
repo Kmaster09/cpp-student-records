@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Student {
+public:
+    int id;
+    std::string name;
+    float gpa;
+
+    Student(int id, std::string name, float gpa) : id(id), name(name), gpa(gpa) {}
+};
+
+class StudentRecordsManager {
+private:
+    std::vector<Student> students;
+
+public:
+    void addStudent(int id, std::string name, float gpa) {
+        students.push_back(Student(id, name, gpa));
+        std::cout << "Student added successfully.\n";
+    }
+
+    void displayStudents() {
+        if (students.empty()) {
+            std::cout << "No student records available.\n";
+            return;
+        }
+        for (const auto& student : students) {
+            std::cout << "ID: " << student.id << ", Name: " << student.name << ", GPA: " << student.gpa << "\n";
+        }
+    }
+
+    void searchStudent(int id) {
+        for (const auto& student : students) {
+            if (student.id == id) {
+                std::cout << "ID: " << student.id << ", Name: " << student.name << ", GPA: " << student.gpa << "\n";
+                return;
+            }
+        }
+        std::cout << "Student with ID " << id << " not found.\n";
+    }
+};
+
+int main() {
+    StudentRecordsManager manager;
+    int choice, id;
+    std::string name;
+    float gpa;
+
+    while (true) {
+        std::cout << "\n1. Add Student\n2. Display Students\n3. Search Student\n4. Exit\nEnter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter ID: ";
+                std::cin >> id;
+                std::cout << "Enter Name: ";
+                std::cin.ignore();
+                std::getline(std::cin, name);
+                std::cout << "Enter GPA: ";
+                std::cin >> gpa;
+                manager.addStudent(id, name, gpa);
+                break;
+            case 2:
+                manager.displayStudents();
+                break;
+            case 3:
+                std::cout << "Enter ID to search: ";
+                std::cin >> id;
+                manager.searchStudent(id);
+                break;
+            case 4:
+                std::cout << "Exiting...\n";
+                return 0;
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
